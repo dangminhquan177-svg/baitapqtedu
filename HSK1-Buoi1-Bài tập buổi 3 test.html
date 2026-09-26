@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bài tập buổi 3</title>
+<style>
+:root{--bg:#0f1219;--ink:#f5f3ff;--muted:#a9b1c4;--panel:rgba(24,30,37,.9);--line:rgba(255,255,255,.12);--cyan:#00c4cc;--purple:#7d2ae8;--pink:#f83984;--green:#34d399;--amber:#fbbf24;--red:#f87171;}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{min-height:100vh;color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans SC",sans-serif;background-color:#0f1219;background-image:radial-gradient(circle at 10% 8%, rgba(0,196,204,.16), transparent 26rem),radial-gradient(circle at 90% 0%, rgba(125,42,232,.2), transparent 30rem);line-height:1.55;padding-bottom:40px;}
+.wrap{max-width:720px;margin:0 auto;padding:16px;}
+h1{font-size:20px;margin:4px 0 2px;background:linear-gradient(135deg,#39e4ea,#a578ff 52%,#ff77aa);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px;}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:0 18px 50px rgba(0,0,0,.24);}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:8px;}
+input[type=text],textarea{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:11px 12px;color:#f8fafc;background:rgba(2,6,23,.5);font:inherit;font-size:16px;}
+textarea{min-height:56px;resize:vertical;}
+input:focus,textarea:focus{outline:3px solid rgba(0,196,204,.55);border-color:rgba(0,196,204,.75);}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);margin-top:6px;background:rgba(2,6,23,.25);}
+.opt input{width:19px;height:19px;flex-shrink:0;}
+.q{border-left:3px solid rgba(0,196,204,.55);background:rgba(2,6,23,.28);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:14px;}
+.q-title{font-weight:700;margin:0 0 8px;}
+.sec-title{font-weight:800;font-size:16px;margin:0;}
+.sec-meta{color:var(--muted);font-size:12px;margin:2px 0 0;}
+.passage{white-space:pre-wrap;background:rgba(2,6,23,.3);border-radius:12px;padding:14px;font-size:14px;line-height:1.7;border:1px solid var(--line);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font-weight:800;font-size:15px;border:1px solid transparent;cursor:pointer;min-height:46px;width:100%;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple) 55%,var(--pink));color:#fff;}
+.btn-outline{background:rgba(2,6,23,.4);border-color:rgba(255,255,255,.18);color:#e2e8f0;margin-top:10px;}
+.msg{border-radius:12px;padding:10px 12px;font-size:14px;border:1px solid;margin-top:14px;}
+.msg-error{border-color:rgba(248,113,113,.4);background:rgba(127,29,29,.3);color:#fecaca;}
+.progress{position:sticky;top:0;z-index:5;background:rgba(15,18,25,.92);backdrop-filter:blur(6px);padding:10px 16px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);text-align:center;}
+.hidden{display:none !important;}
+.score-big{font-size:32px;font-weight:800;text-align:center;background:linear-gradient(135deg,#39e4ea,#a578ff 52%,#ff77aa);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0;}
+.row-between{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+.tag-ok{color:#a7f3d0;font-weight:800;}
+.tag-bad{color:#fecaca;font-weight:800;}
+.review-item{padding:10px 0;border-top:1px dashed var(--line);font-size:13.5px;}
+.review-item:first-child{border-top:0;}
+.hint{color:var(--muted);font-size:12.5px;margin-top:4px;}
+.notice{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);color:#fde68a;border-radius:14px;padding:14px;text-align:center;font-weight:700;font-size:14px;}
+@media print{.no-print{display:none !important;} body{background:#fff;color:#111;} .panel{box-shadow:none;border-color:#ccc;background:#fff;} .score-big,h1{-webkit-text-fill-color:#111;background:none;color:#111;}}
+</style>
+</head>
+<body>
+<div class="progress no-print" id="qp-progress">Đang tải bài tập…</div>
+<div class="wrap">
+  <h1 id="qp-title"> </h1>
+  <p class="sub">QTEDU Vụ Bản · Bài tập tương tác — làm xong hãy chụp màn hình kết quả gửi cho giáo viên.</p>
+
+  <div class="panel hidden" id="qp-passage-box">
+    <label>Ngữ liệu / đoạn văn</label>
+    <div class="passage" id="qp-passage"></div>
+  </div>
+
+  <form id="qp-form">
+    <div class="panel">
+      <label for="qp-name">Họ và tên học viên</label>
+      <input id="qp-name" type="text" maxlength="100" required autocomplete="name">
+    </div>
+    <div id="qp-sections"></div>
+    <div id="qp-error" class="msg msg-error hidden"></div>
+    <button type="submit" class="btn btn-primary no-print" style="margin-top:16px;">✅ Nộp bài</button>
+  </form>
+
+  <div id="qp-result" class="hidden">
+    <div class="panel">
+      <div class="row-between"><strong id="qp-r-name"></strong><span id="qp-r-time" class="hint"></span></div>
+      <p class="hint" id="qp-r-title"></p>
+      <p class="score-big" id="qp-r-total"></p>
+      <div class="notice no-print">📸 Chụp lại toàn bộ màn hình kết quả này (kéo xuống nếu cần) rồi gửi cho giáo viên qua Zalo/Messenger để hoàn tất nộp bài.</div>
+    </div>
+    <div class="panel" id="qp-r-sections"></div>
+    <button type="button" class="btn btn-outline no-print" id="qp-print">🖨 In / Lưu PDF</button>
+    <button type="button" class="btn btn-outline no-print" id="qp-retry">↺ Làm lại từ đầu</button>
+  </div>
+</div>
+<script id="qtedu-payload" type="application/octet-stream">eyJ0aXRsZSI6IkLDoGkgdOG6rXAgYnXhu5VpIDMiLCJsZXZlbCI6IkhTSzEiLCJsZXNzb24iOjEsInBhc3NhZ2UiOiIiLCJzZWN0aW9ucyI6W3siaWQiOiJzLW11aTFtM3dpLWNzMGZvcyIsInRpdGxlIjoiQsOASSAxOiBUUuG6rkMgTkdISeG7hk0gVOG7qiBW4buwTkcgKDUgY8OidSkgQ2jhu41uIMSRw6FwIMOhbiDEkcO6bmcgbmjhuqV0IChBLCBCLCBDIGhv4bq3YyBEKSBjaG8gbmdoxKlhIGhv4bq3YyBwaGnDqm4gw6JtIGPhu6dhIHThu6sgduG7sW5nIGTGsOG7m2kgxJHDonk6IiwiaW5zdHJ1Y3Rpb24iOiIiLCJtYXhTY29yZSI6MTAsInF1ZXN0aW9ucyI6W3siaWQiOiJxLW11aTFtM3dpLW54ZnFsZSIsInR5cGUiOiJtYyIsInRleHQiOiIxLiBU4burIFwi6ICB5biIXCIgKGzHjm9zaMSrKSB0cm9uZyB0aeG6v25nIFRydW5nIGPDsyBuZ2jEqWEgbMOgIGfDrD8iLCJvcHRpb25zIjpbIkEuIEjhu41jIHNpbmgiLCJCLiBUaOG6p3kgZ2nDoW8gLyBDw7QgZ2nDoW8iLCJDLiBC4bqhbiBo4buNYyIsIkQuIFRy4bujIGdp4bqjbmciXSwiY29ycmVjdEluZGV4IjoxfSx7ImlkIjoicS1tdWkxeDd2MS03MWlrczciLCJ0eXBlIjoibWMiLCJ0ZXh0IjoiMi4gxJDhuqFpIHThu6sgXCLmgqhcIiAobsOtbikgxJHGsOG7o2Mgc+G7rSBk4bulbmcgdHJvbmcgdHLGsOG7nW5nIGjhu6NwIG7DoG8/Iiwib3B0aW9ucyI6WyJBLiBEw7luZyBraGkgeMawbmcgaMO0IHbhu5tpIGLhuqFuIGLDqCBi4bqxbmcgdHXhu5VpIiwiQi4gRMO5bmcga2hpIHjGsG5nIGjDtCB24bubaSBuZ8aw4budaSBuaOG7jyB0deG7lWkgaMahbiIsIkMuIETDuW5nIMSR4buDIHRo4buDIGhp4buHbiBz4buxIHRyYW5nIHRy4buNbmcsIHTDtG4ga8OtbmggKHbhu5tpIHRo4bqneSBjw7QsIG5nxrDhu51pIGzhu5tuIHR14buVaSkiLCJELiBEw7luZyDEkeG7gyBn4buNaSBz4buRIG5oaeG7gXUgKGNow7puZyB0w7RpLCBjw6FjIGLhuqFuKSJdLCJjb3JyZWN0SW5kZXgiOjB9XX1dLCJnZW5lcmF0ZWRBdCI6IjIwMjYtMDktMjZUMDg6MDI6MzYuNzAwWiJ9</script>
+<script>
+(function(){
+  "use strict";
+  function byId(id){return document.getElementById(id);}
+  function fromBase64Utf8(b64){
+    var binary = atob(b64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i=0;i<binary.length;i++){ bytes[i]=binary.charCodeAt(i); }
+    return new TextDecoder().decode(bytes);
+  }
+  function loadData(){
+    var raw = byId('qtedu-payload').textContent.trim();
+    try {
+      return JSON.parse(fromBase64Utf8(raw));
+    } catch(e1) {
+      try { return JSON.parse(raw); } catch(e2) { return null; }
+    }
+  }
+  function normalize(s){
+    return String(s||'').trim().toLowerCase().replace(/s+/g,' ');
+  }
+  function draftKey(data){
+    return 'qtedu_draft_' + (data.level||'') + '_' + (data.lesson||'') + '_' + normalize(data.title).replace(/[^a-z0-9]+/g,'-');
+  }
+
+  var data = loadData();
+  if (!data || !Array.isArray(data.sections) || !data.sections.length) {
+    byId('qp-progress').textContent = 'Không đọc được nội dung bài tập. File có thể bị lỗi.';
+    return;
+  }
+
+  byId('qp-title').textContent = data.title || 'Bài tập';
+  document.title = data.title || 'Bài tập';
+  if (data.passage && String(data.passage).trim()) {
+    byId('qp-passage-box').classList.remove('hidden');
+    byId('qp-passage').textContent = data.passage;
+  }
+
+  var totalQuestions = 0;
+  var answeredControls = [];
+
+  var sectionsEl = byId('qp-sections');
+  data.sections.forEach(function(section, sIndex){
+    var qCount = (section.questions||[]).length;
+    var secDiv = document.createElement('div');
+    secDiv.className = 'panel';
+    var head = document.createElement('div');
+    var t = document.createElement('p'); t.className='sec-title'; t.textContent = 'Phần ' + (sIndex+1) + ': ' + (section.title||'');
+    var m = document.createElement('p'); m.className='sec-meta'; m.textContent = (section.maxScore||0) + ' điểm · ' + qCount + ' câu';
+    head.appendChild(t); head.appendChild(m);
+    secDiv.appendChild(head);
+    if (section.instruction && String(section.instruction).trim()){
+      var ins = document.createElement('p'); ins.className='hint'; ins.textContent = section.instruction;
+      secDiv.appendChild(ins);
+    }
+    (section.questions||[]).forEach(function(q, qIndex){
+      totalQuestions++;
+      var qDiv = document.createElement('div'); qDiv.className='q';
+      var qt = document.createElement('p'); qt.className='q-title'; qt.textContent = (qIndex+1) + '. ' + (q.text||'');
+      qDiv.appendChild(qt);
+      if (q.type === 'mc' && Array.isArray(q.options) && q.options.length) {
+        q.options.forEach(function(opt, oIndex){
+          var wrap = document.createElement('label'); wrap.className='opt';
+          var input = document.createElement('input');
+          input.type='radio'; input.name='q_'+section.id+'_'+q.id; input.value=String(oIndex);
+          input.dataset.sectionId = section.id; input.dataset.questionId = q.id;
+          var span = document.createElement('span'); span.textContent = opt;
+          wrap.appendChild(input); wrap.appendChild(span);
+          qDiv.appendChild(wrap);
+          answeredControls.push({type:'mc', el:input, sectionId:section.id, questionId:q.id});
+        });
+      } else {
+        var input2 = document.createElement('textarea');
+        input2.rows = 2;
+        input2.dataset.sectionId = section.id; input2.dataset.questionId = q.id;
+        qDiv.appendChild(input2);
+        answeredControls.push({type:'short', el:input2, sectionId:section.id, questionId:q.id});
+      }
+      secDiv.appendChild(qDiv);
+    });
+    sectionsEl.appendChild(secDiv);
+  });
+
+  function updateProgress(){
+    var answered = 0;
+    var seen = {};
+    answeredControls.forEach(function(c){
+      var key = c.sectionId+'_'+c.questionId;
+      if (seen[key]) return;
+      if (c.type==='mc'){
+        var checked = document.querySelector('input[name="q_'+key+'"]:checked');
+        if (checked) { answered++; seen[key]=true; }
+      } else {
+        if (normalize(c.el.value)) { answered++; seen[key]=true; }
+      }
+    });
+    byId('qp-progress').textContent = 'Đã trả lời ' + answered + '/' + totalQuestions + ' câu';
+  }
+  sectionsEl.addEventListener('input', updateProgress);
+  sectionsEl.addEventListener('change', updateProgress);
+  updateProgress();
+
+  try {
+    var saved = JSON.parse(localStorage.getItem(draftKey(data)) || 'null');
+    if (saved) {
+      if (saved.name) byId('qp-name').value = saved.name;
+      answeredControls.forEach(function(c){
+        var k = c.sectionId+'_'+c.questionId;
+        if (!saved.answers || !(k in saved.answers)) return;
+        var val = saved.answers[k];
+        if (c.type==='mc'){
+          var radio = document.querySelector('input[name="q_'+k+'"][value="'+val+'"]');
+          if (radio) radio.checked = true;
+        } else if (typeof val === 'string') {
+          c.el.value = val;
+        }
+      });
+      updateProgress();
+    }
+  } catch(e) { /* bỏ qua nếu trình duyệt chặn localStorage */ }
+
+  function saveDraft(){
+    try {
+      var answers = {};
+      answeredControls.forEach(function(c){
+        var key = c.sectionId+'_'+c.questionId;
+        if (c.type==='mc'){
+          if (c.el.checked) answers[key] = Number(c.el.value);
+        } else {
+          if (normalize(c.el.value)) answers[key] = c.el.value;
+        }
+      });
+      localStorage.setItem(draftKey(data), JSON.stringify({name: byId('qp-name').value, answers: answers}));
+    } catch(e) { /* bỏ qua */ }
+  }
+  sectionsEl.addEventListener('input', saveDraft);
+  sectionsEl.addEventListener('change', saveDraft);
+  byId('qp-name').addEventListener('input', saveDraft);
+
+  byId('qp-form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var errEl = byId('qp-error');
+    errEl.classList.add('hidden');
+    var name = byId('qp-name').value.trim();
+    if (!name) {
+      errEl.textContent = 'Vui lòng nhập họ tên.';
+      errEl.classList.remove('hidden');
+      byId('qp-name').focus();
+      return;
+    }
+    var seen = {};
+    var missing = false;
+    answeredControls.forEach(function(c){
+      var key = c.sectionId+'_'+c.questionId;
+      if (seen[key]) return;
+      if (c.type==='mc'){
+        if (!document.querySelector('input[name="q_'+key+'"]:checked')) missing = true; else seen[key]=true;
+      } else {
+        if (!normalize(c.el.value)) missing = true; else seen[key]=true;
+      }
+    });
+    if (missing) {
+      errEl.textContent = 'Vui lòng trả lời đầy đủ tất cả các câu hỏi trước khi nộp bài.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+
+    var total = 0;
+    var resultSectionsEl = byId('qp-r-sections');
+    resultSectionsEl.innerHTML = '';
+    data.sections.forEach(function(section, sIndex){
+      var qList = section.questions||[];
+      var per = qList.length ? (Number(section.maxScore)||0) / qList.length : 0;
+      var secScore = 0;
+      var block = document.createElement('div');
+      if (sIndex>0) { block.style.borderTop = '1px dashed rgba(255,255,255,.12)'; block.style.paddingTop = '12px'; block.style.marginTop = '12px'; }
+      var head = document.createElement('div'); head.className='row-between';
+      var ht = document.createElement('strong'); ht.textContent = 'Phần ' + (sIndex+1) + ': ' + (section.title||'');
+      var hs = document.createElement('span');
+      head.appendChild(ht); head.appendChild(hs);
+      block.appendChild(head);
+      resultSectionsEl.appendChild(block);
+
+      qList.forEach(function(q, qIndex){
+        var isCorrect = false;
+        var yourAnswerText = '';
+        var correctAnswerText = '';
+        if (q.type === 'mc') {
+          var checked = document.querySelector('input[name="q_'+section.id+'_'+q.id+'"]:checked');
+          var idx = checked ? Number(checked.value) : -1;
+          isCorrect = idx === Number(q.correctIndex);
+          yourAnswerText = (idx>=0 && q.options[idx]) ? q.options[idx] : '(chưa chọn)';
+          correctAnswerText = q.options[Number(q.correctIndex)] || '';
+        } else {
+          var elx = document.querySelector('textarea[data-section-id="'+section.id+'"][data-question-id="'+q.id+'"]');
+          var val = elx ? elx.value : '';
+          yourAnswerText = val;
+          var accepted = Array.isArray(q.accepted) ? q.accepted : [];
+          correctAnswerText = accepted.join(' / ');
+          isCorrect = accepted.some(function(a){ return normalize(a) === normalize(val); });
+        }
+        if (isCorrect) secScore += per;
+
+        var item = document.createElement('div'); item.className='review-item';
+        var line1 = document.createElement('div');
+        var mark = document.createElement('span'); mark.className = isCorrect ? 'tag-ok' : 'tag-bad'; mark.textContent = isCorrect ? '✓ ' : '✗ ';
+        var qt2 = document.createElement('span'); qt2.textContent = (qIndex+1) + '. ' + (q.text||'');
+        line1.appendChild(mark); line1.appendChild(qt2);
+        item.appendChild(line1);
+        var line2 = document.createElement('div'); line2.className='hint';
+        line2.textContent = 'Trả lời: ' + (yourAnswerText || '(bỏ trống)');
+        item.appendChild(line2);
+        if (!isCorrect) {
+          var line3 = document.createElement('div'); line3.className='hint';
+          line3.textContent = 'Đáp án đúng: ' + correctAnswerText;
+          item.appendChild(line3);
+        }
+        resultSectionsEl.appendChild(item);
+      });
+
+      secScore = Math.round(secScore*100)/100;
+      hs.textContent = secScore + '/' + (Number(section.maxScore)||0) + ' điểm';
+      total += secScore;
+    });
+    total = Math.round(total*100)/100;
+    var maxTotal = data.sections.reduce(function(sum,s){ return sum + (Number(s.maxScore)||0); }, 0);
+
+    byId('qp-r-name').textContent = 'Học viên: ' + name;
+    byId('qp-r-time').textContent = new Date().toLocaleString('vi-VN');
+    byId('qp-r-title').textContent = data.title || '';
+    byId('qp-r-total').textContent = 'Tổng điểm: ' + total + ' / ' + maxTotal;
+
+    byId('qp-form').classList.add('hidden');
+    byId('qp-passage-box').classList.add('hidden');
+    byId('qp-progress').classList.add('hidden');
+    byId('qp-result').classList.remove('hidden');
+    try { localStorage.removeItem(draftKey(data)); } catch(e) {}
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  byId('qp-print').addEventListener('click', function(){ window.print(); });
+  byId('qp-retry').addEventListener('click', function(){ location.reload(); });
+})();
+</script>
+</body>
+</html>
