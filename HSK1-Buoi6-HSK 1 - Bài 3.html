@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HSK 1 - Bài 3</title>
+<style>
+:root{--bg:#0f1219;--ink:#f5f3ff;--muted:#a9b1c4;--panel:rgba(24,30,37,.9);--line:rgba(255,255,255,.12);--cyan:#00c4cc;--purple:#7d2ae8;--pink:#f83984;--green:#34d399;--amber:#fbbf24;--red:#f87171;}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{min-height:100vh;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background-color:#0f1219;background-image:radial-gradient(circle at 10% 8%, rgba(0,196,204,.16), transparent 26rem),radial-gradient(circle at 90% 0%, rgba(125,42,232,.2), transparent 30rem);line-height:1.55;padding-bottom:40px;}
+.wrap{max-width:720px;margin:0 auto;padding:16px;}
+h1{font-size:20px;margin:4px 0 2px;background:linear-gradient(135deg,#39e4ea,#a578ff 52%,#ff77aa);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px;}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:0 18px 50px rgba(0,0,0,.24);}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:8px;}
+input[type=text],textarea{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:11px 12px;color:#f8fafc;background:rgba(2,6,23,.5);font:inherit;font-size:16px;}
+textarea{min-height:56px;resize:vertical;}
+input:focus,textarea:focus{outline:3px solid rgba(0,196,204,.55);border-color:rgba(0,196,204,.75);}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);margin-top:6px;background:rgba(2,6,23,.25);}
+.opt input{width:19px;height:19px;flex-shrink:0;}
+select{width:100%;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:9px 10px;color:#f8fafc;background:rgba(2,6,23,.5);font:inherit;font-size:15px;}
+.match-board{position:relative;display:flex;gap:16px;margin-top:10px;}
+.match-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;position:relative;z-index:2;}
+.match-card{border:2px solid rgba(255,255,255,.15);background:rgba(2,6,23,.45);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit;color:#f8fafc;white-space:normal;word-break:break-word;}
+.match-card.selected{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,196,204,.35);}
+.match-card.connected{border-color:rgba(52,211,153,.6);}
+.match-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
+.match-line{stroke:#00c4cc;stroke-width:2.5;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.chip{display:inline-flex;align-items:center;border-radius:10px;padding:8px 12px;font-weight:700;font-size:14px;border:1px solid rgba(255,255,255,.18);cursor:pointer;background:rgba(2,6,23,.4);color:#e2e8f0;}
+.chip-picked{background:linear-gradient(135deg,var(--cyan),var(--purple) 55%,var(--pink));color:#fff;border-color:transparent;}
+.chip-answer{min-height:44px;border:1px dashed rgba(255,255,255,.25);border-radius:10px;padding:8px;}
+.tag-warn{color:#fde68a;font-weight:800;}
+.q{border-left:3px solid rgba(0,196,204,.55);background:rgba(2,6,23,.28);border-radius:0 12px 12px 0;padding:12px 14px;margin-top:14px;}
+ruby{ruby-position:over;}
+rt{font-size:0.62em;color:var(--muted);font-weight:600;user-select:none;}
+.q-head{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin:0 0 8px;}
+.q-title{font-weight:700;margin:0;flex:1 1 140px;min-width:0;}
+.q-title-line + .q-title-line{margin-top:4px;}
+.q-speaker{color:var(--muted);}
+.q-image{flex:0 0 auto;max-width:110px;width:100%;height:auto;border-radius:10px;display:block;border:1px solid var(--line);cursor:zoom-in;}
+.review-item .q-image{max-width:90px;}
+.sec-title{font-weight:800;font-size:16px;margin:0;}
+.sec-meta{color:var(--muted);font-size:12px;margin:2px 0 0;}
+.passage{white-space:pre-wrap;background:rgba(2,6,23,.3);border-radius:12px;padding:14px;font-size:14px;line-height:1.7;border:1px solid var(--line);}
+.countdown{font-size:19px;font-weight:800;margin:4px 0 0;}
+.countdown-ok{color:#a5f3fc;}
+.countdown-warn{color:#fde68a;}
+.countdown-over{color:#fecaca;}
+.late-badge{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;color:#fecaca;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font-weight:800;font-size:15px;border:1px solid transparent;cursor:pointer;min-height:46px;width:100%;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple) 55%,var(--pink));color:#fff;}
+.btn-outline{background:rgba(2,6,23,.4);border-color:rgba(255,255,255,.18);color:#e2e8f0;margin-top:10px;}
+.msg{border-radius:12px;padding:10px 12px;font-size:14px;border:1px solid;margin-top:14px;}
+.msg-error{border-color:rgba(248,113,113,.4);background:rgba(127,29,29,.3);color:#fecaca;}
+.progress{position:sticky;top:0;z-index:5;background:rgba(15,18,25,.92);backdrop-filter:blur(6px);padding:10px 16px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);text-align:center;}
+.hidden{display:none !important;}
+.score-big{font-size:32px;font-weight:800;text-align:center;background:linear-gradient(135deg,#39e4ea,#a578ff 52%,#ff77aa);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0;}
+.row-between{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
+.tag-ok{color:#a7f3d0;font-weight:800;}
+.tag-bad{color:#fecaca;font-weight:800;}
+.review-item{padding:10px 0;border-top:1px dashed var(--line);font-size:13.5px;}
+.review-item:first-child{border-top:0;}
+.hint{color:var(--muted);font-size:12.5px;margin-top:4px;}
+.notice{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);color:#fde68a;border-radius:14px;padding:14px;text-align:center;font-weight:700;font-size:14px;}
+@media print{.no-print{display:none !important;} body{background:#fff;color:#111;} .panel{box-shadow:none;border-color:#ccc;background:#fff;} .score-big,h1{-webkit-text-fill-color:#111;background:none;color:#111;}}
+</style>
+</head>
+<body>
+<noscript><div class="notice" style="margin:16px;">Trang này cần JavaScript để hoạt động. Vui lòng mở file bằng trình duyệt Chrome, Safari hoặc Edge — không mở bằng trình xem file trong Zalo/Messenger.</div></noscript>
+<div class="progress no-print" id="qp-progress">Đang tải bài tập…</div>
+<div class="wrap">
+  <h1 id="qp-title"> </h1>
+  <p class="sub">QTEDU Vụ Bản · Bài tập tương tác — làm xong hãy chụp màn hình kết quả gửi cho giáo viên.</p>
+
+  <div class="panel hidden" id="qp-deadline-box" style="text-align:center;">
+    <p class="hint" style="margin:0;">⏰ Hạn nộp bài: <span id="qp-deadline-text"></span></p>
+    <p class="countdown countdown-ok" id="qp-countdown"></p>
+  </div>
+
+  <div class="panel hidden" id="qp-passage-box">
+    <label>Ngữ liệu / đoạn văn</label>
+    <div class="passage" id="qp-passage"></div>
+  </div>
+
+  <form id="qp-form">
+    <div class="panel">
+      <label for="qp-name">Họ và tên học viên</label>
+      <input id="qp-name" type="text" maxlength="100" required autocomplete="name">
+      <label for="qp-class" style="margin-top:12px;">Lớp</label>
+      <input id="qp-class" type="text" maxlength="100" required autocomplete="off" placeholder="VD: HSK1 - Tối 3-5-7">
+    </div>
+    <div id="qp-sections"></div>
+    <div id="qp-error" class="msg msg-error hidden"></div>
+    <button type="submit" class="btn btn-primary no-print" style="margin-top:16px;">✅ Nộp bài</button>
+  </form>
+
+  <div id="qp-result" class="hidden">
+    <div class="panel">
+      <div class="row-between"><strong id="qp-r-name"></strong><span id="qp-r-time" class="hint"></span></div>
+      <p class="hint" id="qp-r-class"></p>
+      <p class="hint" id="qp-r-title"></p>
+      <p class="score-big" id="qp-r-total"></p>
+      <div style="text-align:center;"><span id="qp-r-late" class="late-badge hidden">⚠️ NỘP TRỄ</span></div>
+      <div class="notice no-print">📸 Chụp lại toàn bộ màn hình kết quả này (kéo xuống nếu cần) rồi gửi cho giáo viên qua Zalo/Messenger để hoàn tất nộp bài.</div>
+    </div>
+    <div class="panel" id="qp-r-sections"></div>
+    <button type="button" class="btn btn-outline no-print" id="qp-print">🖨 In / Lưu PDF</button>
+    <button type="button" class="btn btn-outline no-print" id="qp-retry">↺ Làm lại từ đầu</button>
+  </div>
+</div>
+<script id="qtedu-payload" type="application/octet-stream">eyJ0aXRsZSI6IkhTSyAxIC0gQsOgaSAzIiwibGV2ZWwiOiJIU0sxIiwibGVzc29uIjo2LCJwYXNzYWdlIjoiIiwic2VjdGlvbnMiOlt7ImlkIjoicy1tdW1ocDZ0dy14cWlnejYiLCJ0aXRsZSI6IlBo4bqnbiAxIiwiaW5zdHJ1Y3Rpb24iOiIiLCJtYXhTY29yZSI6MTAsInF1ZXN0aW9ucyI6W3siaWQiOiJxLW11bWhwNnR3LXk1b3A4bCIsInR5cGUiOiJtYXRjaCIsImxpbmVzIjpbXSwicGFpcnMiOlt7ImlkIjoicC1tdW1ocDZ0dy1lcjJ5NWIiLCJsZWZ0Ijoi55qEIiwibGVmdFBpbnlpbiI6ImRlIiwicmlnaHQiOiJD4bunYSJ9LHsiaWQiOiJwLW11bWhwNnR3LWxudXEyMSIsImxlZnQiOiLosIEiLCJsZWZ0UGlueWluIjoic2jDqWkiLCJyaWdodCI6IkFpIn0seyJpZCI6InAtbXVtaHBlNnotamg2dXZuIiwibGVmdCI6IuWTqiIsImxlZnRQaW55aW4iOiJux44iLCJyaWdodCI6Ik7DoG8ifSx7ImlkIjoicC1tdW1ocGYzZi10M2NnOXgiLCJsZWZ0Ijoi5aW5IiwibGVmdFBpbnlpbiI6InTEgSIsInJpZ2h0IjoiQW5oIOG6pXkifSx7ImlkIjoicC1tdW1oczI3bS16dmMwcTgiLCJsZWZ0Ijoi5b+ZIiwibGVmdFBpbnlpbiI6IkLhuq1uIiwicmlnaHQiOiJtw6FuZyJ9LHsiaWQiOiJwLW11bWtocHM3LTF5cWRwdCIsImxlZnQiOiLlt6XkvZwiLCJsZWZ0UGlueWluIjoiZ8WNbmd6dcOyIiwicmlnaHQiOiJMw6BtIHZp4buHYyAvIGPDtG5nIHZp4buHYyJ9LHsiaWQiOiJwLW11bWtpcDZ0LXpmcXpzaCIsImxlZnQiOiLlr7kiLCJsZWZ0UGlueWluIjoiZHXDrCIsInJpZ2h0IjoixJDDum5nIC8gcGjhuqNpIn1dLCJpbWFnZSI6bnVsbH0seyJpZCI6InEtbXVtaHNrcnYtaGdtd281IiwidHlwZSI6Im1jIiwibGluZXMiOlt7InNwZWFrZXIiOiIiLCJ0ZXh0Ijoi5ZCXICBjw7MgdMOhYyBk4bulbmcgZ8OsPyIsInBpbnlpbiI6Im1hIn1dLCJvcHRpb25zIjpbeyJ0ZXh0IjoiQS4gRMO5bmcgxJHhu4MgY2jDoG8gaOG7j2kiLCJwaW55aW4iOiIifSx7InRleHQiOiJCLiBEw7luZyDEkeG7gyB4aW4gbOG7l2kiLCJwaW55aW4iOiIifSx7InRleHQiOiJDLiBEw7luZyDEkeG7gyBj4bqjbSDGoW4iLCJwaW55aW4iOiIifSx7InRleHQiOiJELiBEw7luZyDhu58gY3Xhu5FpIGPDonUgaOG7j2kiLCJwaW55aW4iOiIifV0sImNvcnJlY3RJbmRleCI6MywiaW1hZ2UiOm51bGx9LHsiaWQiOiJxLW11bWh1OXdyLWV3NnRkNiIsInR5cGUiOiJzaG9ydCIsImxpbmVzIjpbeyJzcGVha2VyIjoiQ2jhu41uIHThu6sgxJFp4buBbiB2w6BvIGNo4buXIHRy4buRbmc6IiwidGV4dCI6IuaIkV9fX19f5Lmm44CCIiwicGlueWluIjoiV8eSIF9fX19fIHNoxasuIn1dLCJhY2NlcHRlZCI6WyLnmoQiLCJkZSJdLCJpbWFnZSI6bnVsbH0seyJpZCI6InEtbXVtaHk3ZGwtbGQ5bXljIiwidHlwZSI6Im1jIiwibGluZXMiOlt7InNwZWFrZXIiOiJDaOG7jW4gdOG7qyDEkWnhu4FuIHbDoG8gY2jhu5cgdHLhu5FuZzoiLCJ0ZXh0Ijoi5oiR5a2m5LmgX19fX1/jgIIiLCJwaW55aW4iOiJXx5IgeHXDqXjDrSBfX19fXy4ifV0sIm9wdGlvbnMiOlt7InRleHQiOiJBLiDkuK3mlociLCJwaW55aW4iOiJ6aMWNbmd3w6luIn0seyJ0ZXh0IjoiQi4g5b+ZIiwicGlueWluIjoibcOhbmcifSx7InRleHQiOiJDLiDosIEiLCJwaW55aW4iOiJzaMOpaSJ9LHsidGV4dCI6IkQuIOWvuSIsInBpbnlpbiI6ImR1w6wifV0sImNvcnJlY3RJbmRleCI6MCwiaW1hZ2UiOm51bGx9LHsiaWQiOiJxLW11bWk1YjE2LXl4Zzh3cCIsInR5cGUiOiJzaG9ydCIsImxpbmVzIjpbeyJzcGVha2VyIjoiQ2jhu41uIHThu6sgxJFp4buBbiB2w6BvIGNo4buXIHRy4buRbmc6IiwidGV4dCI6Il9fX19f5piv5oiR55qE6ICB5biI44CCIiwicGlueWluIjoiX19fX19zaMOsIHfHkiBkZSBsx45vc2jEqy4ifV0sImFjY2VwdGVkIjpbIui/mSIsInpow6giLCJ6aGUiXSwiaW1hZ2UiOm51bGx9LHsiaWQiOiJxLW11bWk4NnpsLWh5emVyZSIsInR5cGUiOiJtYyIsImxpbmVzIjpbeyJzcGVha2VyIjoiVGnhu4N1IFbGsMahbmc6IiwidGV4dCI6Il9fX19f5piv546L6ICB5biI77yfIiwicGlueWluIjoiX19fX19fc2jDrCBXw6FuZyBsx45vc2jEqz8ifSx7InNwZWFrZXIiOiJUcsawxqFuZyBQaMaw4bujbmc6IiwidGV4dCI6IkLvvJrku5bmmK/njovogIHluIjjgIIiLCJwaW55aW4iOiJUxIEgc2jDrCBXw6FuZyBsx45vc2jEqy4ifV0sIm9wdGlvbnMiOlt7InRleHQiOiJBLiDku4DkuYgiLCJwaW55aW4iOiJzaMOpbm1lIn0seyJ0ZXh0IjoiQi4g6LCBIiwicGlueWluIjoic2jDqWkifSx7InRleHQiOiJDLiDlk6oiLCJwaW55aW4iOiLlk6oifSx7InRleHQiOiJELiDov5kiLCJwaW55aW4iOiJ6aMOoIn1dLCJjb3JyZWN0SW5kZXgiOjMsImltYWdlIjpudWxsfSx7ImlkIjoicS1tdW1pYzN2Ni1mbTV0aGIiLCJ0eXBlIjoibWMiLCJsaW5lcyI6W3sic3BlYWtlciI6IiIsInRleHQiOiJfX19fX+aYr+aIkeeahOaci+WPi++8jOWlueWPq+Wwj+e+juOAgiIsInBpbnlpbiI6InNow6wgd8eSIGRlIHDDqW5neW91LCB0xIEgamnDoG8gWGnHjm9txJtpLiJ9XSwib3B0aW9ucyI6W3sidGV4dCI6IkEuIOS7liIsInBpbnlpbiI6InTEgSJ9LHsidGV4dCI6IkIuIOWluSIsInBpbnlpbiI6InTEgSJ9LHsidGV4dCI6IkMuIOiwgSIsInBpbnlpbiI6InNow6lpIn0seyJ0ZXh0IjoiRC4g5ZOqIiwicGlueWluIjoibseOIn1dLCJjb3JyZWN0SW5kZXgiOjEsImltYWdlIjpudWxsfSx7ImlkIjoicS1tdW1pZm03bS16ajd0cXciLCJ0eXBlIjoibWMiLCJsaW5lcyI6W3sic3BlYWtlciI6IlRp4buDdSBN4bu5OiIsInRleHQiOiJfX19fX++8jOS9oOeOsOWcqOaWueS+v+ivtOivneWQl++8nyIsInBpbnlpbiI6Il9fX19f77yMbseQIHhpw6BuesOgaSBmxIFuZ2Jpw6BuIHNodcWNaHXDoCBtYT8qIn0seyJzcGVha2VyIjoiVGnhu4N1IFbGsMahbmc6IiwidGV4dCI6IuS9oOWlve+8jOaIkeeOsOWcqOacieaXtumXtOOAgiIsInBpbnlpbiI6Ik7HkCBox45vLCB3x5IgeGnDoG56w6BpIHnHknUgc2jDrWppxIFuLiJ9XSwib3B0aW9ucyI6W3sidGV4dCI6IkEuIOWvuSIsInBpbnlpbiI6ImR1w6wifSx7InRleHQiOiJCLiDlloIiLCJwaW55aW4iOiJ3w6hpIn0seyJ0ZXh0IjoiQy4g5aSqIiwicGlueWluIjoidMOgaSJ9LHsidGV4dCI6IkQuIOi/mCIsInBpbnlpbiI6ImjDoWkifV0sImNvcnJlY3RJbmRleCI6MSwiaW1hZ2UiOm51bGx9LHsiaWQiOiJxLW11bWlyMW1hLXp5ZWc1dyIsInR5cGUiOiJzaG9ydCIsImxpbmVzIjpbeyJzcGVha2VyIjoiIiwidGV4dCI6IuS9oOaYr+WtpueUn19fX19f77yfIiwicGlueWluIjoiTseQIHNow6wgeHXDqXNoZW5nIF9fX19fPyJ9XSwiYWNjZXB0ZWQiOlsi5ZCXIiwibWEiXSwiaW1hZ2UiOm51bGx9LHsiaWQiOiJxLW11bWl6cm5kLWd6bWNiYyIsInR5cGUiOiJtYyIsImxpbmVzIjpbeyJzcGVha2VyIjoiIiwidGV4dCI6Il9fX19f5piv5oiR55qE5pyL5Y+L77yM5oiR5Lus6YO95a2m5Lmg5Lit5paH44CCIiwicGlueWluIjoiX19fX19zaMOsIHfHkiBkZSBww6luZ3lvdSwgd8eSbWVuIGTFjXUgeHXDqXjDrSBaaMWNbmd3w6luLiJ9XSwib3B0aW9ucyI6W3sidGV4dCI6IkEuIOaIkeS7rCIsInBpbnlpbiI6InfHkm1lbiJ9LHsidGV4dCI6IkIuIOiwgSIsInBpbnlpbiI6InNow6lpIn0seyJ0ZXh0IjoiQy4g5ZOqIiwicGlueWluIjoibseOIn0seyJ0ZXh0IjoiRC4g5aW5IiwicGlueWluIjoidMSBIn1dLCJjb3JyZWN0SW5kZXgiOjMsImltYWdlIjpudWxsfSx7ImlkIjoicS1tdW1qOG0wOS1sdmthZjYiLCJ0eXBlIjoibWMiLCJsaW5lcyI6W3sic3BlYWtlciI6IlThu6sgbsOgeSBuZ2jEqWEgbMOgIGfDrDoiLCJ0ZXh0Ijoi5oOzIiwicGlueWluIjoieGnHjm5nIn1dLCJvcHRpb25zIjpbeyJ0ZXh0IjoiQS4gTXXhu5FuIC8gbmdoxKkiLCJwaW55aW4iOiIifSx7InRleHQiOiJCLiBCaeG6v3QiLCJwaW55aW4iOiIifSx7InRleHQiOiJDLiBH4buNaSIsInBpbnlpbiI6IiJ9LHsidGV4dCI6IkQuIEzDoG0gdmnhu4djIiwicGlueWluIjoiIn1dLCJjb3JyZWN0SW5kZXgiOjAsImltYWdlIjpudWxsfSx7ImlkIjoicS1tdW1qYTV1MS00YnFtOGkiLCJ0eXBlIjoibWMiLCJsaW5lcyI6W3sic3BlYWtlciI6IsSQaeG7gW4gdOG7qyB2w6BvIGNo4buXIHRy4buRbmc6IiwidGV4dCI6IuaIkV9fX19f5a2m5Lmg5Lit5paH77yM5Lmf5oOz5Y675Lit5Zu944CCIiwicGlueWluIjoiV8eSIF9fX19fIHh1w6l4w60gWmjFjW5nd8OpbiwgecSbIHhpx45uZyBxw7kgWmjFjW5nZ3XDsy4ifV0sIm9wdGlvbnMiOlt7InRleHQiOiJBLiDlv5kiLCJwaW55aW4iOiJtw6FuZyJ9LHsidGV4dCI6IkIuIOaDsyIsInBpbnlpbiI6Inhpx45uZyJ9LHsidGV4dCI6IkMuIOWvuSIsInBpbnlpbiI6ImR1w6wifSx7InRleHQiOiJELiDlk6oiLCJwaW55aW4iOiJux44ifV0sImNvcnJlY3RJbmRleCI6MCwiaW1hZ2UiOm51bGx9XX1dLCJkZWFkbGluZSI6IiIsImdlbmVyYXRlZEF0IjoiMjAyNi0wOS0yOVQxMTowNDoxOC4zNjhaIn0=</script>
+<script>
+(function(){
+  "use strict";
+  function byId(id){return document.getElementById(id);}
+  function fromBase64Utf8(b64){
+    var binary = atob(b64);
+    if (typeof TextDecoder !== 'undefined') {
+      var bytes = new Uint8Array(binary.length);
+      for (var i=0;i<binary.length;i++){ bytes[i]=binary.charCodeAt(i); }
+      return new TextDecoder().decode(bytes);
+    }
+    return decodeURIComponent(escape(binary));
+  }
+  function loadData(){
+    var raw = byId('qtedu-payload').textContent.trim();
+    try {
+      return JSON.parse(fromBase64Utf8(raw));
+    } catch(e1) {
+      try { return JSON.parse(raw); } catch(e2) { return null; }
+    }
+  }
+  function normalize(s){
+    return String(s||'').trim().toLowerCase().replace(/s+/g,' ');
+  }
+  function appendRuby(parent, text, pinyin){
+    text = text||'';
+    pinyin = String(pinyin||'').trim();
+    if (!pinyin) {
+      parent.appendChild(document.createTextNode(text));
+      return;
+    }
+    // Tách theo các đoạn gạch dưới (_____) để chỗ trống điền từ không bị gắn pinyin.
+    // Nếu pinyin cũng có gạch dưới ở đúng vị trí tương ứng, ghép chính xác từng đoạn chữ Hán với pinyin của riêng nó.
+    var textParts = text.split(/(_+)/);
+    var pinyinParts = pinyin.split(/(_+)/);
+    var paired = textParts.length === pinyinParts.length;
+    var usedFallback = false;
+    textParts.forEach(function(part, idx){
+      if (!part) return;
+      if (/^_+$/.test(part)) {
+        parent.appendChild(document.createTextNode(part));
+        return;
+      }
+      var pin = '';
+      if (paired) {
+        pin = (pinyinParts[idx]||'').trim();
+      } else if (!usedFallback) {
+        // Không khớp cấu trúc gạch dưới: chỉ gắn cả chuỗi pinyin cho đoạn chữ Hán đầu tiên, các đoạn sau để trơn.
+        pin = pinyin;
+        usedFallback = true;
+      }
+      if (pin && !/^_+$/.test(pin)) {
+        var ruby = document.createElement('ruby');
+        ruby.appendChild(document.createTextNode(part));
+        var rt = document.createElement('rt');
+        rt.textContent = pin;
+        ruby.appendChild(rt);
+        parent.appendChild(ruby);
+      } else {
+        parent.appendChild(document.createTextNode(part));
+      }
+    });
+  }
+  function shuffleArray(arr){
+    for (var i=arr.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp;
+    }
+    return arr;
+  }
+  function draftKey(data){
+    return 'qtedu_draft_' + (data.level||'') + '_' + (data.lesson||'') + '_' + normalize(data.title).replace(/[^a-z0-9]+/g,'-');
+  }
+
+  var data = loadData();
+  if (!data || !Array.isArray(data.sections) || !data.sections.length) {
+    byId('qp-progress').textContent = 'Không đọc được nội dung bài tập. File có thể bị lỗi.';
+    return;
+  }
+
+  byId('qp-title').textContent = data.title || 'Bài tập';
+  document.title = data.title || 'Bài tập';
+  if (data.passage && String(data.passage).trim()) {
+    byId('qp-passage-box').classList.remove('hidden');
+    byId('qp-passage').textContent = data.passage;
+  }
+
+  var isOverdue = false;
+  var countdownTimer = null;
+  var deadlineDate = data.deadline ? new Date(data.deadline) : null;
+  if (deadlineDate && !isNaN(deadlineDate.getTime())) {
+    byId('qp-deadline-box').classList.remove('hidden');
+    byId('qp-deadline-text').textContent = deadlineDate.toLocaleString('vi-VN');
+    var tickCountdown = function(){
+      var remainMs = deadlineDate.getTime() - Date.now();
+      var el = byId('qp-countdown');
+      if (remainMs <= 0) {
+        isOverdue = true;
+        el.className = 'countdown countdown-over';
+        el.textContent = 'Đã hết hạn nộp bài';
+        if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+        return;
+      }
+      var totalSeconds = Math.floor(remainMs / 1000);
+      var days = Math.floor(totalSeconds / 86400);
+      var hours = Math.floor((totalSeconds % 86400) / 3600);
+      var minutes = Math.floor((totalSeconds % 3600) / 60);
+      var seconds = totalSeconds % 60;
+      var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+      var text = (days > 0 ? days + ' ngày ' : '') + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+      el.textContent = 'Còn lại: ' + text;
+      el.className = 'countdown ' + (remainMs <= 24*3600*1000 ? 'countdown-warn' : 'countdown-ok');
+    };
+    tickCountdown();
+    countdownTimer = setInterval(tickCountdown, 1000);
+  }
+
+  var totalQuestions = 0;
+  var answeredControls = [];
+  var orderState = {};
+  var matchState = {};
+
+  var sectionsEl = byId('qp-sections');
+  data.sections.forEach(function(section, sIndex){
+    var qCount = (section.questions||[]).length;
+    var secDiv = document.createElement('div');
+    secDiv.className = 'panel';
+    var head = document.createElement('div');
+    var t = document.createElement('p'); t.className='sec-title'; t.textContent = 'Phần ' + (sIndex+1) + ': ' + (section.title||'');
+    var m = document.createElement('p'); m.className='sec-meta'; m.textContent = (section.maxScore||0) + ' điểm · ' + qCount + ' câu';
+    head.appendChild(t); head.appendChild(m);
+    secDiv.appendChild(head);
+    if (section.instruction && String(section.instruction).trim()){
+      var ins = document.createElement('p'); ins.className='hint'; ins.textContent = section.instruction;
+      secDiv.appendChild(ins);
+    }
+    (section.questions||[]).forEach(function(q, qIndex){
+      totalQuestions++;
+      var qDiv = document.createElement('div'); qDiv.className='q';
+      var qHead = document.createElement('div'); qHead.className='q-head';
+      var qt = document.createElement('div'); qt.className='q-title';
+      var qLinesForDisplay = (q.lines && q.lines.length) ? q.lines : [{speaker:'',text:'',pinyin:''}];
+      qLinesForDisplay.forEach(function(line, lIndex){
+        var lineDiv = document.createElement('div'); lineDiv.className='q-title-line';
+        if (lIndex===0) lineDiv.appendChild(document.createTextNode((qIndex+1) + '. '));
+        if (line.speaker && String(line.speaker).trim()) {
+          var spk = document.createElement('span'); spk.className='q-speaker'; spk.textContent = line.speaker + ' ';
+          lineDiv.appendChild(spk);
+        }
+        appendRuby(lineDiv, line.text||'', line.pinyin);
+        qt.appendChild(lineDiv);
+      });
+      qHead.appendChild(qt);
+      if (q.image) {
+        var qImgLink = document.createElement('a'); qImgLink.href = q.image; qImgLink.target = '_blank'; qImgLink.rel = 'noopener';
+        var qImg = document.createElement('img'); qImg.className='q-image'; qImg.src = q.image; qImg.alt = 'Hình minh hoạ câu ' + (qIndex+1) + ' (bấm để xem cỡ đầy đủ)';
+        qImgLink.appendChild(qImg);
+        qHead.appendChild(qImgLink);
+      }
+      qDiv.appendChild(qHead);
+      if (q.type === 'mc' && Array.isArray(q.options) && q.options.length) {
+        var shuffledOptions = q.options.map(function(opt, oIndex){ return {opt:opt, originalIndex:oIndex}; });
+        shuffleArray(shuffledOptions);
+        shuffledOptions.forEach(function(entry){
+          var wrap = document.createElement('label'); wrap.className='opt';
+          var input = document.createElement('input');
+          input.type='radio'; input.name='q_'+section.id+'_'+q.id; input.value=String(entry.originalIndex);
+          input.dataset.sectionId = section.id; input.dataset.questionId = q.id;
+          var span = document.createElement('span');
+          appendRuby(span, entry.opt.text||'', entry.opt.pinyin);
+          wrap.appendChild(input); wrap.appendChild(span);
+          qDiv.appendChild(wrap);
+        });
+        answeredControls.push({type:'mc', sectionId:section.id, questionId:q.id, isAnswered:function(){
+          return !!document.querySelector('input[name="q_'+section.id+'_'+q.id+'"]:checked');
+        }});
+      } else if (q.type === 'match' && Array.isArray(q.pairs) && q.pairs.length) {
+        var rightItems = q.pairs.map(function(p){ return {id:p.id, text:p.right}; });
+        shuffleArray(rightItems);
+
+        var matchHint = document.createElement('p'); matchHint.className='hint'; matchHint.textContent = 'Bấm 1 từ bên trái, rồi bấm nghĩa tương ứng bên phải để nối.';
+        qDiv.appendChild(matchHint);
+
+        var matchBoard = document.createElement('div'); matchBoard.className='match-board';
+        var matchLeftCol = document.createElement('div'); matchLeftCol.className='match-col';
+        var matchRightCol = document.createElement('div'); matchRightCol.className='match-col';
+        var svgNS = 'http://www.w3.org/2000/svg';
+        var matchSvg = document.createElementNS(svgNS, 'svg'); matchSvg.setAttribute('class', 'match-svg');
+
+        var matchConnections = {};
+        var matchSelectedLeft = null;
+        var matchLeftEls = {};
+        var matchRightEls = {};
+
+        function redrawMatchLines(){
+          var rect = matchBoard.getBoundingClientRect();
+          if (!rect.width) return;
+          matchSvg.setAttribute('viewBox', '0 0 ' + rect.width + ' ' + rect.height);
+          while (matchSvg.firstChild) matchSvg.removeChild(matchSvg.firstChild);
+          Object.keys(matchConnections).forEach(function(leftId){
+            var rightId = matchConnections[leftId];
+            var lEl = matchLeftEls[leftId], rEl = matchRightEls[rightId];
+            if (!lEl || !rEl) return;
+            var lr = lEl.getBoundingClientRect(), rr = rEl.getBoundingClientRect();
+            var line = document.createElementNS(svgNS, 'line');
+            line.setAttribute('x1', lr.right - rect.left);
+            line.setAttribute('y1', lr.top + lr.height/2 - rect.top);
+            line.setAttribute('x2', rr.left - rect.left);
+            line.setAttribute('y2', rr.top + rr.height/2 - rect.top);
+            line.setAttribute('class', 'match-line');
+            matchSvg.appendChild(line);
+          });
+        }
+        function updateMatchCardStates(){
+          q.pairs.forEach(function(pair){
+            var el = matchLeftEls[pair.id];
+            el.classList.toggle('selected', matchSelectedLeft === pair.id);
+            el.classList.toggle('connected', !!matchConnections[pair.id]);
+          });
+          rightItems.forEach(function(ri){
+            var el = matchRightEls[ri.id];
+            var used = Object.keys(matchConnections).some(function(k){ return matchConnections[k] === ri.id; });
+            el.classList.toggle('connected', used);
+          });
+        }
+
+        q.pairs.forEach(function(pair){
+          var card = document.createElement('button'); card.type='button'; card.className='match-card';
+          appendRuby(card, pair.left||'', pair.leftPinyin);
+          card.addEventListener('click', function(){
+            matchSelectedLeft = pair.id;
+            updateMatchCardStates();
+          });
+          matchLeftCol.appendChild(card);
+          matchLeftEls[pair.id] = card;
+        });
+        rightItems.forEach(function(ri){
+          var card2 = document.createElement('button'); card2.type='button'; card2.className='match-card'; card2.textContent = ri.text;
+          card2.addEventListener('click', function(){
+            if (!matchSelectedLeft) return;
+            matchConnections[matchSelectedLeft] = ri.id;
+            matchSelectedLeft = null;
+            updateMatchCardStates();
+            redrawMatchLines();
+            updateProgress(); saveDraft();
+          });
+          matchRightCol.appendChild(card2);
+          matchRightEls[ri.id] = card2;
+        });
+
+        matchBoard.appendChild(matchSvg);
+        matchBoard.appendChild(matchLeftCol);
+        matchBoard.appendChild(matchRightCol);
+        qDiv.appendChild(matchBoard);
+
+        window.addEventListener('resize', redrawMatchLines);
+        setTimeout(redrawMatchLines, 0);
+
+        matchState[section.id+'_'+q.id] = { getConnections: function(){ return matchConnections; } };
+        answeredControls.push({type:'match', sectionId:section.id, questionId:q.id, isAnswered:function(){
+          return q.pairs.every(function(p){ return !!matchConnections[p.id]; });
+        }});
+      } else if (q.type === 'order' && Array.isArray(q.tokens) && q.tokens.length) {
+        var answerSeq = [];
+        var bank = q.tokens.slice();
+        shuffleArray(bank);
+        var answerRow = document.createElement('div'); answerRow.className='chip-row chip-answer';
+        var bankRow = document.createElement('div'); bankRow.className='chip-row';
+        var renderOrderUI = function(){
+          answerRow.innerHTML=''; bankRow.innerHTML='';
+          if (!answerSeq.length){
+            var ph = document.createElement('span'); ph.className='hint'; ph.textContent='Bấm các từ bên dưới theo đúng thứ tự';
+            answerRow.appendChild(ph);
+          }
+          answerSeq.forEach(function(tok){
+            var chip = document.createElement('button'); chip.type='button'; chip.className='chip chip-picked';
+            appendRuby(chip, tok.text||'', tok.pinyin);
+            chip.addEventListener('click', function(){
+              var idx = answerSeq.indexOf(tok);
+              if (idx>=0) answerSeq.splice(idx,1);
+              bank.push(tok);
+              renderOrderUI();
+              updateProgress(); saveDraft();
+            });
+            answerRow.appendChild(chip);
+          });
+          bank.forEach(function(tok){
+            var chip2 = document.createElement('button'); chip2.type='button'; chip2.className='chip';
+            appendRuby(chip2, tok.text||'', tok.pinyin);
+            chip2.addEventListener('click', function(){
+              var idx = bank.indexOf(tok);
+              if (idx>=0) bank.splice(idx,1);
+              answerSeq.push(tok);
+              renderOrderUI();
+              updateProgress(); saveDraft();
+            });
+            bankRow.appendChild(chip2);
+          });
+        };
+        renderOrderUI();
+        qDiv.appendChild(answerRow);
+        qDiv.appendChild(bankRow);
+        orderState[section.id+'_'+q.id] = { getSeq: function(){ return answerSeq.map(function(t){ return t.id; }); } };
+        answeredControls.push({type:'order', sectionId:section.id, questionId:q.id, isAnswered:function(){
+          return answerSeq.length === q.tokens.length;
+        }});
+      } else {
+        var input2 = document.createElement('textarea');
+        input2.rows = 2;
+        input2.dataset.sectionId = section.id; input2.dataset.questionId = q.id;
+        qDiv.appendChild(input2);
+        answeredControls.push({type:'short', el:input2, sectionId:section.id, questionId:q.id, isAnswered:function(){
+          return !!normalize(input2.value);
+        }});
+      }
+      secDiv.appendChild(qDiv);
+    });
+    sectionsEl.appendChild(secDiv);
+  });
+
+  function updateProgress(){
+    var answered = 0;
+    answeredControls.forEach(function(c){
+      if (c.isAnswered()) answered++;
+    });
+    byId('qp-progress').textContent = 'Đã trả lời ' + answered + '/' + totalQuestions + ' câu';
+  }
+  sectionsEl.addEventListener('input', updateProgress);
+  sectionsEl.addEventListener('change', updateProgress);
+  updateProgress();
+
+  try {
+    var saved = JSON.parse(localStorage.getItem(draftKey(data)) || 'null');
+    if (saved) {
+      if (saved.name) byId('qp-name').value = saved.name;
+      if (saved.className) byId('qp-class').value = saved.className;
+      answeredControls.forEach(function(c){
+        var k = c.sectionId+'_'+c.questionId;
+        if (!saved.answers || !(k in saved.answers)) return;
+        var val = saved.answers[k];
+        if (c.type==='mc'){
+          var radio = document.querySelector('input[name="q_'+k+'"][value="'+val+'"]');
+          if (radio) radio.checked = true;
+        } else if (c.type==='short' && typeof val === 'string') {
+          c.el.value = val;
+        }
+      });
+      updateProgress();
+    }
+  } catch(e) { /* bỏ qua nếu trình duyệt chặn localStorage */ }
+
+  function saveDraft(){
+    try {
+      var answers = {};
+      answeredControls.forEach(function(c){
+        var key = c.sectionId+'_'+c.questionId;
+        if (c.type==='mc'){
+          var checked = document.querySelector('input[name="q_'+key+'"]:checked');
+          if (checked) answers[key] = Number(checked.value);
+        } else if (c.type==='short'){
+          if (normalize(c.el.value)) answers[key] = c.el.value;
+        }
+        // match/order: chưa lưu nháp — nếu tải lại trang học viên cần chọn lại phần này.
+      });
+      localStorage.setItem(draftKey(data), JSON.stringify({name: byId('qp-name').value, className: byId('qp-class').value, answers: answers}));
+    } catch(e) { /* bỏ qua */ }
+  }
+  sectionsEl.addEventListener('input', saveDraft);
+  sectionsEl.addEventListener('change', saveDraft);
+  byId('qp-name').addEventListener('input', saveDraft);
+  byId('qp-class').addEventListener('input', saveDraft);
+
+  byId('qp-form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var errEl = byId('qp-error');
+    errEl.classList.add('hidden');
+    var name = byId('qp-name').value.trim();
+    if (!name) {
+      errEl.textContent = 'Vui lòng nhập họ tên.';
+      errEl.classList.remove('hidden');
+      byId('qp-name').focus();
+      return;
+    }
+    var className = byId('qp-class').value.trim();
+    if (!className) {
+      errEl.textContent = 'Vui lòng nhập tên lớp.';
+      errEl.classList.remove('hidden');
+      byId('qp-class').focus();
+      return;
+    }
+    var missing = false;
+    answeredControls.forEach(function(c){
+      if (!c.isAnswered()) missing = true;
+    });
+    if (missing) {
+      errEl.textContent = 'Vui lòng trả lời đầy đủ tất cả các câu hỏi trước khi nộp bài.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+
+    var total = 0;
+    var resultSectionsEl = byId('qp-r-sections');
+    resultSectionsEl.innerHTML = '';
+    data.sections.forEach(function(section, sIndex){
+      var qList = section.questions||[];
+      var per = qList.length ? (Number(section.maxScore)||0) / qList.length : 0;
+      var secScore = 0;
+      var block = document.createElement('div');
+      if (sIndex>0) { block.style.borderTop = '1px dashed rgba(255,255,255,.12)'; block.style.paddingTop = '12px'; block.style.marginTop = '12px'; }
+      var head = document.createElement('div'); head.className='row-between';
+      var ht = document.createElement('strong'); ht.textContent = 'Phần ' + (sIndex+1) + ': ' + (section.title||'');
+      var hs = document.createElement('span');
+      head.appendChild(ht); head.appendChild(hs);
+      block.appendChild(head);
+      resultSectionsEl.appendChild(block);
+
+      qList.forEach(function(q, qIndex){
+        var fraction = 0;
+        var yourAnswerText = '';
+        var correctAnswerText = '';
+        if (q.type === 'mc') {
+          var checked = document.querySelector('input[name="q_'+section.id+'_'+q.id+'"]:checked');
+          var idx = checked ? Number(checked.value) : -1;
+          fraction = (idx === Number(q.correctIndex)) ? 1 : 0;
+          var chosenOpt = (idx>=0 && q.options[idx]) ? q.options[idx] : null;
+          yourAnswerText = chosenOpt ? (chosenOpt.text + (chosenOpt.pinyin ? ' (' + chosenOpt.pinyin + ')' : '')) : '(chưa chọn)';
+          var correctOpt = q.options[Number(q.correctIndex)];
+          correctAnswerText = correctOpt ? (correctOpt.text + (correctOpt.pinyin ? ' (' + correctOpt.pinyin + ')' : '')) : '';
+        } else if (q.type === 'match') {
+          var totalPairs = q.pairs.length;
+          var correctCount = 0;
+          var yourList = [];
+          var correctList = [];
+          var matchConns = matchState[section.id+'_'+q.id] ? matchState[section.id+'_'+q.id].getConnections() : {};
+          q.pairs.forEach(function(pairObj){
+            var chosenId = matchConns[pairObj.id] || '';
+            if (chosenId === pairObj.id) correctCount++;
+            var chosenText = '(chưa chọn)';
+            if (chosenId) {
+              for (var pj=0; pj<q.pairs.length; pj++){ if (q.pairs[pj].id === chosenId) { chosenText = q.pairs[pj].right; break; } }
+            }
+            var leftDisp = pairObj.left + (pairObj.leftPinyin ? ' (' + pairObj.leftPinyin + ')' : '');
+            yourList.push(leftDisp + ' → ' + chosenText);
+            correctList.push(leftDisp + ' → ' + pairObj.right);
+          });
+          fraction = totalPairs>0 ? correctCount/totalPairs : 0;
+          yourAnswerText = yourList.join('; ');
+          correctAnswerText = correctList.join('; ');
+        } else if (q.type === 'order') {
+          var seqIds = orderState[section.id+'_'+q.id] ? orderState[section.id+'_'+q.id].getSeq() : [];
+          var correctIds = q.tokens.map(function(t){ return t.id; });
+          var orderOk = seqIds.length === correctIds.length && seqIds.every(function(id,i){ return id === correctIds[i]; });
+          fraction = orderOk ? 1 : 0;
+          var tokById = {}; q.tokens.forEach(function(t){ tokById[t.id]=t; });
+          var fmtTok = function(t){ return t ? (t.text + (t.pinyin ? ' (' + t.pinyin + ')' : '')) : '?'; };
+          yourAnswerText = seqIds.length ? seqIds.map(function(id){ return fmtTok(tokById[id]); }).join(' ') : '';
+          correctAnswerText = q.tokens.map(fmtTok).join(' ');
+        } else {
+          var elx = document.querySelector('textarea[data-section-id="'+section.id+'"][data-question-id="'+q.id+'"]');
+          var val = elx ? elx.value : '';
+          yourAnswerText = val;
+          var accepted = Array.isArray(q.accepted) ? q.accepted : [];
+          correctAnswerText = accepted.join(' / ');
+          fraction = accepted.some(function(a){ return normalize(a) === normalize(val); }) ? 1 : 0;
+        }
+        secScore += per * fraction;
+
+        var item = document.createElement('div'); item.className='review-item';
+        var line1 = document.createElement('div'); line1.className='q-head'; line1.style.margin='0';
+        var textCol = document.createElement('div'); textCol.style.flex='1 1 140px'; textCol.style.minWidth='0';
+        var mark = document.createElement('span');
+        if (fraction >= 1) { mark.className='tag-ok'; mark.textContent='✓ '; }
+        else if (fraction <= 0) { mark.className='tag-bad'; mark.textContent='✗ '; }
+        else { mark.className='tag-warn'; mark.textContent='◐ '; }
+        var qt2 = document.createElement('div');
+        var qLinesForReview = (q.lines && q.lines.length) ? q.lines : [{speaker:'',text:'',pinyin:''}];
+        qLinesForReview.forEach(function(line, lIndex){
+          var lineDiv = document.createElement('div'); lineDiv.className='q-title-line';
+          if (lIndex===0) {
+            lineDiv.appendChild(mark);
+            lineDiv.appendChild(document.createTextNode((qIndex+1) + '. '));
+          }
+          if (line.speaker && String(line.speaker).trim()) {
+            var spk2 = document.createElement('span'); spk2.className='q-speaker'; spk2.textContent = line.speaker + ' ';
+            lineDiv.appendChild(spk2);
+          }
+          appendRuby(lineDiv, line.text||'', line.pinyin);
+          qt2.appendChild(lineDiv);
+        });
+        textCol.appendChild(qt2);
+        line1.appendChild(textCol);
+        if (q.image) {
+          var rImgLink = document.createElement('a'); rImgLink.href = q.image; rImgLink.target = '_blank'; rImgLink.rel = 'noopener';
+          var rImg = document.createElement('img'); rImg.className='q-image'; rImg.src = q.image; rImg.alt = 'Hình câu ' + (qIndex+1) + ' (bấm để xem cỡ đầy đủ)';
+          rImgLink.appendChild(rImg);
+          line1.appendChild(rImgLink);
+        }
+        item.appendChild(line1);
+        var line2 = document.createElement('div'); line2.className='hint';
+        line2.textContent = 'Trả lời: ' + (yourAnswerText || '(bỏ trống)');
+        item.appendChild(line2);
+        if (fraction < 1) {
+          var line3 = document.createElement('div'); line3.className='hint';
+          line3.textContent = 'Đáp án đúng: ' + correctAnswerText;
+          item.appendChild(line3);
+        }
+        resultSectionsEl.appendChild(item);
+      });
+
+      secScore = Math.round(secScore*100)/100;
+      hs.textContent = secScore + '/' + (Number(section.maxScore)||0) + ' điểm';
+      total += secScore;
+    });
+    total = Math.round(total*100)/100;
+    var maxTotal = data.sections.reduce(function(sum,s){ return sum + (Number(s.maxScore)||0); }, 0);
+
+    byId('qp-r-name').textContent = 'Học viên: ' + name;
+    byId('qp-r-time').textContent = new Date().toLocaleString('vi-VN');
+    byId('qp-r-class').textContent = 'Lớp: ' + className;
+    byId('qp-r-title').textContent = data.title || '';
+    byId('qp-r-late').classList.toggle('hidden', !isOverdue);
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+    byId('qp-r-total').textContent = 'Tổng điểm: ' + total + ' / ' + maxTotal;
+
+    byId('qp-form').classList.add('hidden');
+    byId('qp-passage-box').classList.add('hidden');
+    byId('qp-deadline-box').classList.add('hidden');
+    byId('qp-progress').classList.add('hidden');
+    byId('qp-result').classList.remove('hidden');
+    try { localStorage.removeItem(draftKey(data)); } catch(e) {}
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  byId('qp-print').addEventListener('click', function(){ window.print(); });
+  byId('qp-retry').addEventListener('click', function(){ location.reload(); });
+})();
+</script>
+</body>
+</html>
